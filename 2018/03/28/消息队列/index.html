@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>消息队列 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Message 消息是 RabbitMQ 的操作单元，由 Payload 有效负载和 Label 标签两部分组成，前者作为消息的主体数据，后者则包含了消息路由转发相关的描述数据。Producer 生产者负责生产消息，通过设定 Label 的内容来决定将消息投递到指定队列。Consumer 消费者负责接收消息并执行相应的任务，消费者仅仅会关心消息的 Payload，而无需关心消息的 Label。消费">
+<meta property="og:type" content="article">
+<meta property="og:title" content="消息队列">
+<meta property="og:url" content="http://yoursite.com/2018/03/28/消息队列/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Message 消息是 RabbitMQ 的操作单元，由 Payload 有效负载和 Label 标签两部分组成，前者作为消息的主体数据，后者则包含了消息路由转发相关的描述数据。Producer 生产者负责生产消息，通过设定 Label 的内容来决定将消息投递到指定队列。Consumer 消费者负责接收消息并执行相应的任务，消费者仅仅会关心消息的 Payload，而无需关心消息的 Label。消费">
+<meta property="og:updated_time" content="2018-03-28T03:00:39.829Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="消息队列">
+<meta name="twitter:description" content="Message 消息是 RabbitMQ 的操作单元，由 Payload 有效负载和 Label 标签两部分组成，前者作为消息的主体数据，后者则包含了消息路由转发相关的描述数据。Producer 生产者负责生产消息，通过设定 Label 的内容来决定将消息投递到指定队列。Consumer 消费者负责接收消息并执行相应的任务，消费者仅仅会关心消息的 Payload，而无需关心消息的 Label。消费">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-消息队列" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/03/28/消息队列/" class="article-date">
+  <time datetime="2018-03-28T02:58:09.000Z" itemprop="datePublished">2018-03-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      消息队列
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Message 消息<br>是 RabbitMQ 的操作单元，由 Payload 有效负载和 Label 标签两部分组成，前者作为消息的主体数据，后者则包含了消息路由转发相关的描述数据。<br>Producer 生产者<br>负责生产消息，通过设定 Label 的内容来决定将消息投递到指定队列。<br>Consumer 消费者<br>负责接收消息并执行相应的任务，消费者仅仅会关心消息的 Payload，而无需关心消息的 Label。消费者会从订阅的队列中获取消息，如果有多个消费者订阅了同一队列，那么队列默认会以平摊的方式将消息分派给消费者。<br>Queue 队列<br>是存放消息的地方，消息会在队列中以 FIFO 的方式等待取出。先进入的先取出<br>Exchange 交换机<br>生产者和队列之间的中转站，充当路由器的功能，将消息路由到不同的队列中，最后再被订阅了该队列的消费者取出。<br>Binding 绑定<br>为队列和交换机建立绑定关系，只有在确立了绑定关系之后，交换机才会将消息路由到相应的队列中，每一个绑定关系都会包含有一个 Binding Key。<br>Binding Key 绑定键<br>在绑定交换机和队列时，会为此次绑定设置一个 Key 值，作为唯一标识。<br>Routing Key 路由键<br>消息的路由转发描述，用作消息和队列之间的匹配，会在队列绑定到交换机时设置。同时，生产者在生产消息时也为该消息指定一个路由键，以此来决定由将该消息存放到哪一个队列中。实际上 Routing Key 可能还需要结合 Exchange Type 以及 Binding Key 才能最终决定路由目标。</p>
+<p>为了解决这个问题，RabbitMQ 规定了队列在把消息传递给消费者之后并不会立即将消息从队列中丢弃，而是要求队列在接收到消费者的 ACK 响应之后，才将其丢弃。如果队列传递消息之后的一段时间内仍未能接收到消费者的 ACK，那么消息就会传递给别的消费者处理直到队列接收到 ACK 响应为止，以此来确保每一个消息都能被有效的传递，这就是 RabbitMQ 的消息应答机制。消息应答机制默认是开启的，当然了，如果在对结果响应无所谓的场景中，我们完全可以关闭掉它</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/03/28/消息队列/" data-id="cjfdd27600001v4v27j0fx4rr" class="article-share-link">Partager</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/03/27/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">Hello World</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/03/28/消息队列/">消息队列</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/27/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 John Doe<br>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
